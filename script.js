@@ -1,15 +1,4 @@
-function agregarFila() {
-  const tabla = document.querySelector("#tabla-productos tbody");
-  const fila = document.createElement("tr");
-  fila.innerHTML = `
-    <td><input type="text" value=""></td>
-    <td><input type="number" value="1"></td>
-    <td><input type="number" value="0"></td>
-    <td class="total">Q0.00</td>
-  `;
-  tabla.appendChild(fila);
-}
-
+// Función principal para generar la factura
 function generarFactura() {
   const nombre = document.getElementById("nombre").value;
   const nit = document.getElementById("nit").value;
@@ -23,9 +12,10 @@ function generarFactura() {
     const producto = fila.children[0].children[0].value;
     const cantidad = parseFloat(fila.children[1].children[0].value);
     const precio = parseFloat(fila.children[2].children[0].value);
+    if (!producto || isNaN(cantidad) || isNaN(precio)) return;
+
     const total = cantidad * precio;
     totalGeneral += total;
-    fila.children[3].textContent = `Q${total.toFixed(2)}`;
 
     productosHTML += `
       <tr>
@@ -38,44 +28,67 @@ function generarFactura() {
   });
 
   const facturaHTML = `
-    <div id="factura">
-      <h2>Factura Branox</h2>
-      <p><strong>Cliente:</strong> ${nombre}</p>
+    <div class="encabezado">
+      <img src="logo-branox.png" alt="Branox">
+      <div class="empresa">
+        <h1>Branox</h1>
+        <p>NIT: 103035346</p>
+        <p>Zona 7, Residenciales Imperial, Cobán A.V.</p>
+        <p>Tel: 3809 9190</p>
+      </div>
+    </div>
+
+    <div class="datos-cliente">
+      <h2>Datos del Cliente</h2>
+      <p><strong>Nombre:</strong> ${nombre}</p>
       <p><strong>NIT:</strong> ${nit}</p>
       <p><strong>Dirección:</strong> ${direccion}</p>
-      <table>
-        <thead>
-          <tr>
-            <th>Producto</th>
-            <th>Cantidad</th>
-            <th>Precio Unitario</th>
-            <th>Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${productosHTML}
-        </tbody>
-      </table>
-      <h3>Total General: Q${totalGeneral.toFixed(2)}</h3>
     </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Precio Unitario</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${productosHTML}
+      </tbody>
+    </table>
+
+    <h3 style="text-align:right; margin-top:20px;">Total General: Q${totalGeneral.toFixed(2)}</h3>
   `;
 
-  const contenedor = document.getElementById("factura-generada");
+  const contenedor = document.getElementById("factura-final");
   contenedor.innerHTML = facturaHTML;
   contenedor.classList.remove("factura-oculta");
+
+  document.getElementById("acciones-finales").classList.remove("factura-oculta");
 }
 
-function descargarPDF() {
-  const factura = document.getElementById("factura");
-  html2pdf().from(factura).save("factura-branox.pdf");
-}
-
+// Función para descargar la factura como imagen PNG
 function descargarImagen() {
-  const factura = document.getElementById("factura");
-  html2canvas(document.querySelector("#factura")).then(canvas => {
-  const link = document.createElement("a");
-  link.download = "factura-branox.png";
-  link.href = canvas.toDataURL();
-  link.click();
-});
+  html2canvas(document.getElementById("factura-final")).then(canvas => {
+    const link = document.createElement("a");
+    link.download = "factura-branox.png";
+    link.href = canvas.toDataURL();
+    link.click();
+  });
 }
+
+// (Opcional) Función para descargar como PDF – se puede agregar con jsPDF
+// function descargarPDF() {
+//   const factura = document.getElementById("factura-final");
+//   const doc = new jsPDF();
+//   doc.html(factura, {
+//     callback: function (doc) {
+//       doc.save("factura-branox.pdf");
+//     },
+//     x: 10,
+//     y: 10
+//   });
+// }
+
