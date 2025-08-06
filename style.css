@@ -1,70 +1,140 @@
+/* Fuente base */
 body {
   font-family: 'Roboto', sans-serif;
-  background: #f4f4f4;
-  margin: 0;
+  background: #f5f5f5;
   padding: 20px;
+  color: #333;
 }
 
-.container {
-  max-width: 800px;
-  margin: auto;
+/* Título principal */
+h1 {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* Secciones principales */
+.formulario,
+.tabla-productos {
   background: white;
   padding: 20px;
+  margin-bottom: 30px;
   box-shadow: 0 0 10px #ccc;
+  border-radius: 8px;
 }
 
-header {
-  display: flex;
-  align-items: center;
-  border-bottom: 2px solid #333;
-  padding-bottom: 10px;
-}
-
-.logo {
-  width: 100px;
-  margin-right: 20px;
-}
-
-.empresa h1 {
-  margin: 0;
-  font-size: 24px;
-}
-
-section {
-  margin-top: 20px;
+/* Etiquetas e inputs */
+label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
 }
 
 input {
+  width: 100%;
   padding: 8px;
-  margin: 5px;
-  width: calc(100% - 20px);
+  margin-top: 5px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
+/* Tabla de productos */
 table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 10px;
+  margin-top: 20px;
 }
 
 th, td {
-  border: 1px solid #ccc;
+  border: 1px solid #999;
   padding: 8px;
   text-align: left;
 }
 
+th {
+  background: #f0f0f0;
+}
+
+/* Botones */
 button {
-  margin: 10px 5px;
-  padding: 10px 15px;
-  background: #0077cc;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #0078D4;
   color: white;
   border: none;
+  border-radius: 4px;
   cursor: pointer;
+  font-weight: bold;
 }
 
 button:hover {
   background: #005fa3;
 }
 
+/* Factura generada */
+#factura-final {
+  width: 800px;
+  margin: 40px auto;
+  padding: 40px;
+  background: white;
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 10px #ccc;
+  border-radius: 8px;
+}
+
+#factura-final .encabezado {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+#factura-final .encabezado img {
+  width: 100px;
+  height: auto;
+  margin-right: 20px;
+}
+
+#factura-final .empresa {
+  font-size: 14px;
+}
+
+#factura-final .datos-cliente {
+  margin-top: 20px;
+  font-size: 15px;
+}
+
+#factura-final .datos-cliente h2 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Tabla dentro de la factura */
+#factura-final table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+#factura-final th, #factura-final td {
+  border: 1px solid #999;
+  padding: 8px;
+  text-align: left;
+}
+
+#factura-final th {
+  background: #f0f0f0;
+}
+
+/* Botones de descarga */
+#acciones-finales {
+  text-align: center;
+  margin-top: 20px;
+}
+
+/* Ocultar factura antes de generarla */
 .factura-oculta {
   display: none;
 }
