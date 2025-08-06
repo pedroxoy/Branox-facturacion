@@ -3,13 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <title>Generador de Facturas - Branox</title>
+
+  <!-- Fuente Roboto -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap">
+
+  <!-- Librería para capturar como imagen -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
   <style>
     body {
       font-family: 'Roboto', sans-serif;
       background: #f5f5f5;
       padding: 20px;
+      color: #333;
     }
 
     h1 {
@@ -22,11 +28,13 @@
       padding: 20px;
       margin-bottom: 30px;
       box-shadow: 0 0 10px #ccc;
+      border-radius: 8px;
     }
 
     label {
       display: block;
       margin-top: 10px;
+      font-weight: bold;
     }
 
     input {
@@ -34,6 +42,8 @@
       padding: 8px;
       margin-top: 5px;
       box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
     }
 
     table {
@@ -58,7 +68,9 @@
       background: #0078D4;
       color: white;
       border: none;
+      border-radius: 4px;
       cursor: pointer;
+      font-weight: bold;
     }
 
     button:hover {
@@ -74,6 +86,7 @@
       color: #333;
       border: 1px solid #ccc;
       box-shadow: 0 0 10px #ccc;
+      border-radius: 8px;
     }
 
     #factura-final .encabezado {
@@ -169,10 +182,8 @@
     <button onclick="generarFactura()">Generar Factura</button>
   </div>
 
-  <!-- Vista previa de la factura generada -->
   <div id="factura-final" class="factura-oculta"></div>
 
-  <!-- Botones para descargar -->
   <div id="acciones-finales" class="factura-oculta">
     <button onclick="descargarImagen()">Descargar como imagen</button>
   </div>
