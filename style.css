@@ -116,6 +116,7 @@ button:hover {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  font-size: 12px; /* Puedes ajustar a 12px si quieres aún más compacto */
 }
 
 #factura-final th, #factura-final td {
