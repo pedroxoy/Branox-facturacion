@@ -120,13 +120,14 @@ button:hover {
 }
 
 #factura-final th, #factura-final td {
-  border: 1px solid #999;
-  padding: 8px;
+  border: 1px solid #ccc;
+  padding: 6px 10px;
   text-align: left;
 }
 
 #factura-final th {
-  background: #f0f0f0;
+  background-color: #f2f2f2;
+  font-weight: bold;
 }
 
 /* Botones de descarga */
