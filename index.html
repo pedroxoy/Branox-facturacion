@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Factura Branox</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img src="logo-branox.png" alt="Branox" class="logo">
+      <div class="empresa">
+        <h1>Branox</h1>
+        <p>NIT: 1234567-8</p>
+        <p>Dirección: Zona 5, Ciudad de Guatemala</p>
+        <p>Tel: +502 5555-5555</p>
+      </div>
+    </header>
+
+    <section class="datos-cliente">
+      <h2>Datos del Cliente</h2>
+      <input type="text" id="nombre" placeholder="Nombre completo">
+      <input type="text" id="nit" placeholder="NIT">
+      <input type="text" id="direccion" placeholder="Dirección">
+    </section>
+
+    <section class="productos">
+      <h2>Productos</h2>
+      <table id="tabla-productos">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="text" value="Lavaloza Premium"></td>
+            <td><input type="number" value="1"></td>
+            <td><input type="number" value="75"></td>
+            <td class="total">Q75.00</td>
+          </tr>
+        </tbody>
+      </table>
+      <button onclick="agregarFila()">Agregar producto</button>
+    </section>
+
+    <section class="acciones">
+      <button onclick="generarFactura()">Generar factura</button>
+      <button onclick="descargarPDF()">Descargar PDF</button>
+      <button onclick="descargarImagen()">Descargar imagen</button>
+    </section>
+
+    <section id="factura-generada" class="factura-oculta"></section>
+  </div>
+
+  <script src="script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</body>
+</html>
