@@ -91,7 +91,7 @@ button:hover {
 }
 
 #factura-final .encabezado img {
-  width: 100px;
+  width: 160px;
   height: auto;
   margin-right: 20px;
 }
@@ -138,3 +138,14 @@ button:hover {
 .factura-oculta {
   display: none;
 }
+/* Tamaño carta (A4) para impresión o imagen */
+@media print {
+  #factura-final {
+    width: 21cm;
+    height: 29.7cm;
+    padding: 2cm;
+    box-sizing: border-box;
+  }
+ }
+  
+  
