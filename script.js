@@ -72,10 +72,10 @@ function descargarPDF() {
 
 function descargarImagen() {
   const factura = document.getElementById("factura");
-  html2canvas(factura).then(canvas => {
-    const enlace = document.createElement("a");
-    enlace.download = "factura-branox.png";
-    enlace.href = canvas.toDataURL();
-    enlace.click();
-  });
+  html2canvas(document.querySelector("#factura")).then(canvas => {
+  const link = document.createElement("a");
+  link.download = "factura-branox.png";
+  link.href = canvas.toDataURL();
+  link.click();
+});
 }
