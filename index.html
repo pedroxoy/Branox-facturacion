@@ -11,6 +11,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <style>
+    /* Fuente base */
     body {
       font-family: 'Roboto', sans-serif;
       background: #f5f5f5;
@@ -18,12 +19,15 @@
       color: #333;
     }
 
+    /* Título principal */
     h1 {
       text-align: center;
       margin-bottom: 30px;
     }
 
-    .formulario, .tabla-productos {
+    /* Secciones principales */
+    .formulario,
+    .tabla-productos {
       background: white;
       padding: 20px;
       margin-bottom: 30px;
@@ -31,6 +35,7 @@
       border-radius: 8px;
     }
 
+    /* Etiquetas e inputs */
     label {
       display: block;
       margin-top: 10px;
@@ -46,6 +51,7 @@
       border-radius: 4px;
     }
 
+    /* Tabla de productos */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -62,6 +68,7 @@
       background: #f0f0f0;
     }
 
+    /* Botones */
     button {
       margin-top: 20px;
       padding: 10px 20px;
@@ -77,6 +84,7 @@
       background: #005fa3;
     }
 
+    /* Factura generada */
     #factura-final {
       width: 800px;
       margin: 40px auto;
@@ -96,7 +104,7 @@
     }
 
     #factura-final .encabezado img {
-      width: 100px;
+      width: 120px;
       height: auto;
       margin-right: 20px;
     }
@@ -116,35 +124,50 @@
       border-bottom: 1px solid #ccc;
     }
 
+    /* Tabla dentro de la factura */
     #factura-final table {
       width: 100%;
       border-collapse: collapse;
       margin-top: 20px;
+      font-size: 10px;
     }
 
     #factura-final th, #factura-final td {
-      border: 1px solid #999;
-      padding: 8px;
+      border: 1px solid #ccc;
+      padding: 6px 10px;
       text-align: left;
     }
 
     #factura-final th {
-      background: #f0f0f0;
+      background-color: #f2f2f2;
+      font-weight: bold;
     }
 
+    /* Botones de descarga */
     #acciones-finales {
       text-align: center;
       margin-top: 20px;
     }
 
+    /* Ocultar factura antes de generarla */
     .factura-oculta {
       display: none;
+    }
+
+    /* Tamaño carta (A4) para impresión o imagen */
+    @media print {
+      #factura-final {
+        width: 21cm;
+        height: 29.7cm;
+        padding: 2cm;
+        box-sizing: border-box;
+      }
     }
   </style>
 </head>
 <body>
 
-  <h1>Generador de Facturas - Branox</h1>
+  <h1 id="titulo-cotizacion">FACTURACION</h1>
 
   <div class="formulario">
     <label for="nombre">Nombre del Cliente:</label>
@@ -179,12 +202,13 @@
         </tr>
       </tbody>
     </table>
-    <button onclick="generarFactura()">Generar Factura</button>
+    <button onclick="generarFactura()">GENERAR FACTURA</button>
   </div>
-  <!-- Botón para agregar más productos -->
-<div style="margin-top: 15px; text-align: center;">
-  <button id="agregar-producto">Agregar más productos</button>
-</div>
+
+  <div style="text-align: center;">
+    <button id="agregar-producto">Agregar más productos</button>
+    <button onclick="reiniciarNumeracion()">Reiniciar numeración</button>
+  </div>
 
   <div id="factura-final" class="factura-oculta"></div>
 
@@ -193,103 +217,128 @@
   </div>
 
   <script>
-  function generarFactura() {
-    const nombre = document.getElementById("nombre").value;
-    const nit = document.getElementById("nit").value;
-    const direccion = document.getElementById("direccion").value;
+    let numeroCotizacion = parseInt(localStorage.getItem("numeroCotizacion")) || 1;
 
-    const filas = document.querySelectorAll("#tabla-productos tbody tr");
-    let productosHTML = "";
-    let totalGeneral = 0;
+    function generarFactura() {
+      const nombre = document.getElementById("nombre").value;
+      const nit = document.getElementById("nit").value;
+      const direccion = document.getElementById("direccion").value;
+      const fecha = new Date().toLocaleDateString("es-GT");
 
-    filas.forEach(fila => {
-      const producto = fila.children[0].children[0].value;
-      const cantidad = parseFloat(fila.children[1].children[0].value);
-      const precio = parseFloat(fila.children[2].children[0].value);
-      if (!producto || isNaN(cantidad) || isNaN(precio)) return;
+      const filas = document.querySelectorAll("#tabla-productos tbody tr");
+      let productosHTML = "";
+      let totalGeneral = 0;
 
-      const total = cantidad * precio;
-      totalGeneral += total;
+      filas.forEach(fila => {
+        const producto = fila.children[0].children[0].value;
+        const cantidad = parseFloat(fila.children[1].children[0].value);
+        const precio = parseFloat(fila.children[2].children[0].value);
+        if (!producto || isNaN(cantidad) || isNaN(precio)) return;
 
-      productosHTML += `
-        <tr>
-          <td>${producto}</td>
-          <td>${cantidad}</td>
-          <td>Q${precio.toFixed(2)}</td>
-          <td>Q${total.toFixed(2)}</td>
-        </tr>
-      `;
-    });
+        const total = cantidad * precio;
+        totalGeneral += total;
 
-    const facturaHTML = `
-      <div class="encabezado">
-        <img src="logo-branox.png" alt="Branox">
-        <div class="empresa">
-          <h1>Branox</h1>
-          <p>NIT: 103035346</p>
-          <p>Zona 7, Residenciales Imperial, Cobán A.V.</p>
-          <p>Tel: 3809 9190</p>
-        </div>
-      </div>
-
-      <div class="datos-cliente">
-        <h2>Datos del Cliente</h2>
-        <p><strong>Nombre:</strong> ${nombre}</p>
-        <p><strong>NIT:</strong> ${nit}</p>
-        <p><strong>Dirección:</strong> ${direccion}</p>
-      </div>
-
-      <table>
-        <thead>
+        productosHTML += `
           <tr>
-            <th>Producto</th>
-            <th>Cantidad</th>
-            <th>Precio Unitario</th>
-            <th>Total</th>
+            <td>${producto}</td>
+            <td>${cantidad}</td>
+            <td>Q${precio.toFixed(2)}</td>
+            <td>Q${total.toFixed(2)}</td>
           </tr>
-        </thead>
-        <tbody>
-          ${productosHTML}
-        </tbody>
-      </table>
+        `;
+      });
 
-      <h3 style="text-align:right; margin-top:20px;">Total General: Q${totalGeneral.toFixed(2)}</h3>
-    `;
+      if (productosHTML.trim() === "") {
+        alert("Por favor ingresa al menos un producto válido.");
+        return;
+      }
 
-    const contenedor = document.getElementById("factura-final");
-    contenedor.innerHTML = facturaHTML;
-    contenedor.classList.remove("factura-oculta");
+      const numeroFormateado = String(numeroCotizacion).padStart(5, '0');
+      document.getElementById("titulo-cotizacion").textContent = `Factura No. ${numeroFormateado}`;
 
-    document.getElementById("acciones-finales").classList.remove("factura-oculta");
-  }
+      const facturaHTML = `
+        <div class="encabezado">
+          <img src="logo-branox.png" alt="Logo">
+          <div class="empresa">
+            <p>NIT: 103035346</p>
+            <p>Zona 7, Residenciales Imperial, Cobán A.V.</p>
+            <p>Tel: 3809 9190</p>
+          </div>
+        </div>
 
-  function descargarImagen() {
-    const factura = document.getElementById("factura-final");
-    html2canvas(factura, {
-      scale: 2,        // 📈 Aumenta la resolución
-      useCORS: true    // 🛡️ Permite cargar imágenes externas si usas logo
-    }).then(canvas => {
-      const link = document.createElement("a");
-      link.download = "factura-branox.png";
-      link.href = canvas.toDataURL("image/png");
-      link.click();
+        <h2 style="text-align:center; margin-bottom:20px;">Cotización No. ${numeroFormateado}</h2>
+        <p><strong>Fecha:</strong> ${fecha}</p>
+
+        <div class="datos-cliente">
+          <h2>Datos del Cliente</h2>
+          <p><strong>Nombre:</strong> ${nombre}</p>
+          <p><strong>NIT:</strong> ${nit}</p>
+          <p><strong>Dirección:</strong> ${direccion}</p>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Producto</th>
+              <th>Cantidad</th>
+              <th>Precio Unitario</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${productosHTML}
+          </tbody>
+        </table>
+
+        <h3 style="text-align:right; margin-top:20px;">Total General: Q${totalGeneral.toFixed(2)}</h3>
+      `;
+
+      const contenedor = document.getElementById("factura-final");
+      contenedor.innerHTML = facturaHTML;
+      contenedor.classList.remove("factura-oculta");
+
+      document.getElementById("acciones-finales").classList.remove("factura-oculta");
+
+      numeroCotizacion++;
+      localStorage.setItem("numeroCotizacion", numeroCotizacion);
+    }
+
+    function descargarImagen() {
+      const factura = document.getElementById("factura-final");
+      html2canvas(factura, {
+        scale: 2,
+        useCORS: true
+      }).then(canvas => {
+        const link = document.createElement("a");
+        link.download = "factura-branox.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+    }
+
+    function agregarProducto() {
+      const tbody = document.querySelector("#tabla-productos tbody");
+      const nuevaFila = document.createElement("tr");
+      nuevaFila.innerHTML = `
+        <td><input type="text" placeholder="Producto"></td>
+        <td><input type="number" value="1"></td>
+        <td><input type="number" value="0.00"></td>
+      `;
+      tbody.appendChild(nuevaFila);
+    }
+
+    function reiniciarNumeracion() {
+      if (confirm("¿Reiniciar numeración de cotización?")) {
+        numeroCotizacion = 1;
+        localStorage.setItem("numeroCotizacion", numeroCotizacion);
+        document.getElementById("titulo-cotizacion").textContent = "Cotización";
+        alert("Numeración reiniciada.");
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      document.getElementById("agregar-producto").addEventListener("click", agregarProducto);
     });
-  }
-
-  function agregarProducto() {
-    const tbody = document.querySelector("#tabla-productos tbody");
-    const nuevaFila = document.createElement("tr");
-    nuevaFila.innerHTML = `
-      <td><input type="text" placeholder="Producto"></td>
-      <td><input type="number" value="1"></td>
-      <td><input type="number" value="0.00"></td>
-    `;
-    tbody.appendChild(nuevaFila);
-  }
-
-  document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("agregar-producto").addEventListener("click", agregarProducto);
-  });
-</script>
+  </script>
 </body>
 </html>
