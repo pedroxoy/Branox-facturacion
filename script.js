@@ -36,7 +36,7 @@ function generarFactura() {
 
   const facturaHTML = `
     <div class="encabezado">
-      <img src="logo-branox.png" alt="Logo" style="height:84px;">
+      <img src="logo-branox.png" alt="Logo" style="height:88px;">
       <div class="empresa">
         <p>NIT: 103035346</p>
         <p>Zona 7, Residenciales Imperial, Cobán A.V.</p>
