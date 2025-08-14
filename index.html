@@ -11,7 +11,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
   <style>
-    /* Fuente base */
     body {
       font-family: 'Roboto', sans-serif;
       background: #f5f5f5;
@@ -19,13 +18,11 @@
       color: #333;
     }
 
-    /* Título principal */
     h1 {
       text-align: center;
       margin-bottom: 30px;
     }
 
-    /* Secciones principales */
     .formulario,
     .tabla-productos {
       background: white;
@@ -35,7 +32,6 @@
       border-radius: 8px;
     }
 
-    /* Etiquetas e inputs */
     label {
       display: block;
       margin-top: 10px;
@@ -51,7 +47,6 @@
       border-radius: 4px;
     }
 
-    /* Tabla de productos */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -68,7 +63,6 @@
       background: #f0f0f0;
     }
 
-    /* Botones */
     button {
       margin-top: 20px;
       padding: 10px 20px;
@@ -84,7 +78,6 @@
       background: #005fa3;
     }
 
-    /* Factura generada */
     #factura-final {
       width: 800px;
       margin: 40px auto;
@@ -124,7 +117,6 @@
       border-bottom: 1px solid #ccc;
     }
 
-    /* Tabla dentro de la factura */
     #factura-final table {
       width: 100%;
       border-collapse: collapse;
@@ -143,18 +135,15 @@
       font-weight: bold;
     }
 
-    /* Botones de descarga */
     #acciones-finales {
       text-align: center;
       margin-top: 20px;
     }
 
-    /* Ocultar factura antes de generarla */
     .factura-oculta {
       display: none;
     }
 
-    /* Tamaño carta (A4) para impresión o imagen */
     @media print {
       #factura-final {
         width: 21cm;
@@ -217,7 +206,7 @@
   </div>
 
   <script>
-    let numeroCotizacion = parseInt(localStorage.getItem("numeroCotizacion")) || 1;
+    let numeroFactura = parseInt(localStorage.getItem("numeroFactura")) || 1;
 
     function generarFactura() {
       const nombre = document.getElementById("nombre").value;
@@ -253,8 +242,8 @@
         return;
       }
 
-      const numeroFormateado = String(numeroCotizacion).padStart(5, '0');
-      document.getElementById("titulo-cotizacion").textContent = `Factura No. ${numeroFormateado}`;
+      const numeroFormateado = String(numeroFactura).padStart(5, '0');
+      document.getElementById("titulo-factura").textContent = `Factura No. ${numeroFormateado}`;
 
       const facturaHTML = `
         <div class="encabezado">
@@ -266,7 +255,7 @@
           </div>
         </div>
 
-        <h2 style="text-align:center; margin-bottom:20px;">Cotización No. ${numeroFormateado}</h2>
+        <h2 style="text-align:center; margin-bottom:20px;">Factura No. ${numeroFormateado}</h2>
         <p><strong>Fecha:</strong> ${fecha}</p>
 
         <div class="datos-cliente">
@@ -299,8 +288,8 @@
 
       document.getElementById("acciones-finales").classList.remove("factura-oculta");
 
-      numeroCotizacion++;
-      localStorage.setItem("numeroCotizacion", numeroCotizacion);
+      numeroFactura++;
+      localStorage.setItem("numeroFactura", numeroFactura);
     }
 
     function descargarImagen() {
@@ -328,10 +317,10 @@
     }
 
     function reiniciarNumeracion() {
-      if (confirm("¿Reiniciar numeración de cotización?")) {
-        numeroCotizacion = 1;
-        localStorage.setItem("numeroCotizacion", numeroCotizacion);
-        document.getElementById("titulo-cotizacion").textContent = "Cotización";
+      if (confirm("¿Reiniciar numeración de factura?")) {
+        numeroFactura = 1;
+        localStorage.setItem("numeroFactura", numeroFactura);
+        document.getElementById("titulo-factura").textContent = "FACTURA";
         alert("Numeración reiniciada.");
       }
     }
@@ -342,3 +331,4 @@
   </script>
 </body>
 </html>
+
