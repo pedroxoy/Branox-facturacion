@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Generador de Cotizaciones - Branox</title>
+  <title>Generador de Facturacion - Branox</title>
 
   <!-- Fuente Roboto -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap">
@@ -167,7 +167,7 @@
 </head>
 <body>
 
-  <h1 id="titulo-cotizacion">COTIZACION</h1>
+  <h1 id="titulo-cotizacion">FACTURA</h1>
 
   <div class="formulario">
     <label for="nombre">Nombre del Cliente:</label>
@@ -202,7 +202,7 @@
         </tr>
       </tbody>
     </table>
-    <button onclick="generarFactura()">GENERAR COTIZACION</button>
+    <button onclick="generarFactura()">GENERAR FACTURA</button>
   </div>
 
   <div style="text-align: center;">
@@ -254,7 +254,7 @@
       }
 
       const numeroFormateado = String(numeroCotizacion).padStart(5, '0');
-      document.getElementById("titulo-cotizacion").textContent = `Cotización No. ${numeroFormateado}`;
+      document.getElementById("titulo-cotizacion").textContent = `Factura No. ${numeroFormateado}`;
 
       const facturaHTML = `
         <div class="encabezado">
@@ -266,7 +266,7 @@
           </div>
         </div>
 
-        <h2 style="text-align:center; margin-bottom:20px;">Cotización No. ${numeroFormateado}</h2>
+        <h2 style="text-align:center; margin-bottom:20px;">Factura No. ${numeroFormateado}</h2>
         <p><strong>Fecha:</strong> ${fecha}</p>
 
         <div class="datos-cliente">
