@@ -34,6 +34,9 @@ function generarFactura() {
     return;
   }
 
+  const numeroFormateado = String(numeroCotizacion).padStart(5, '0');
+  document.getElementById("titulo-factura").textContent = `Factura No. ${numeroFormateado}`;
+
   const facturaHTML = `
     <div class="encabezado">
       <img src="logo-branox.png" alt="Logo" style="height:80px;">
@@ -45,7 +48,6 @@ function generarFactura() {
     </div>
 
     <h2 style="text-align:center; margin-bottom:20px;">Factura No. ${numeroFormateado}</h2>
-
     <p><strong>Fecha:</strong> ${fecha}</p>
 
     <div class="datos-cliente">
@@ -83,19 +85,37 @@ function generarFactura() {
 }
 
 function descargarImagen() {
-  html2canvas(document.getElementById("factura-final")).then(canvas => {
+  html2canvas(document.getElementById("factura-final"), {
+    scale: 2,
+    useCORS: true
+  }).then(canvas => {
     const link = document.createElement("a");
-    link.download = "cotizacion-branox.png";
+    link.download = "factura-branox.png";
     link.href = canvas.toDataURL();
     link.click();
   });
 }
 
-function reiniciarNumeracion() {
- if (confirm("¿Reiniciar numeración de factura?")) {
-  numeroCotizacion = 1;
-  localStorage.setItem("numeroCotizacion", numeroCotizacion);
-  document.getElementById("titulo-factura").textContent = "Factura";
-  alert("Numeración reiniciada.");
+function agregarProducto() {
+  const tbody = document.querySelector("#tabla-productos tbody");
+  const nuevaFila = document.createElement("tr");
+  nuevaFila.innerHTML = `
+    <td><input type="text" placeholder="Producto"></td>
+    <td><input type="number" value="1"></td>
+    <td><input type="number" value="0.00"></td>
+  `;
+  tbody.appendChild(nuevaFila);
 }
+
+function reiniciarNumeracion() {
+  if (confirm("¿Reiniciar numeración de factura?")) {
+    numeroCotizacion = 1;
+    localStorage.setItem("numeroCotizacion", numeroCotizacion);
+    document.getElementById("titulo-factura").textContent = "Factura";
+    alert("Numeración reiniciada.");
   }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  document.getElementById("agregar-producto").addEventListener("click", agregarProducto);
+});
