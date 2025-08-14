@@ -1,8 +1,10 @@
-// Función principal para generar la factura
+let numeroCotizacion = parseInt(localStorage.getItem("numeroCotizacion")) || 1;
+
 function generarFactura() {
   const nombre = document.getElementById("nombre").value;
   const nit = document.getElementById("nit").value;
   const direccion = document.getElementById("direccion").value;
+  const fecha = new Date().toLocaleDateString("es-GT");
 
   const filas = document.querySelectorAll("#tabla-productos tbody tr");
   let productosHTML = "";
@@ -27,16 +29,24 @@ function generarFactura() {
     `;
   });
 
+  if (productosHTML.trim() === "") {
+    alert("Por favor ingresa al menos un producto válido.");
+    return;
+  }
+
   const facturaHTML = `
     <div class="encabezado">
-      <img src="logo-branox.png" alt="Branox">
+      <img src="logo-branox.png" alt="Logo" style="height:80px;">
       <div class="empresa">
-        <h1>Branox</h1>
         <p>NIT: 103035346</p>
         <p>Zona 7, Residenciales Imperial, Cobán A.V.</p>
         <p>Tel: 3809 9190</p>
       </div>
     </div>
+
+    <h2 style="text-align:center; margin-bottom:20px;">Factura No. ${numeroFormateado}</h2>
+
+    <p><strong>Fecha:</strong> ${fecha}</p>
 
     <div class="datos-cliente">
       <h2>Datos del Cliente</h2>
@@ -67,28 +77,25 @@ function generarFactura() {
   contenedor.classList.remove("factura-oculta");
 
   document.getElementById("acciones-finales").classList.remove("factura-oculta");
+
+  numeroCotizacion++;
+  localStorage.setItem("numeroCotizacion", numeroCotizacion);
 }
 
-// Función para descargar la factura como imagen PNG
 function descargarImagen() {
   html2canvas(document.getElementById("factura-final")).then(canvas => {
     const link = document.createElement("a");
-    link.download = "factura-branox.png";
+    link.download = "cotizacion-branox.png";
     link.href = canvas.toDataURL();
     link.click();
   });
 }
 
-// (Opcional) Función para descargar como PDF – se puede agregar con jsPDF
-// function descargarPDF() {
-//   const factura = document.getElementById("factura-final");
-//   const doc = new jsPDF();
-//   doc.html(factura, {
-//     callback: function (doc) {
-//       doc.save("factura-branox.pdf");
-//     },
-//     x: 10,
-//     y: 10
-//   });
-// }
-
+function reiniciarNumeracion() {
+ if (confirm("¿Reiniciar numeración de factura?")) {
+  numeroCotizacion = 1;
+  localStorage.setItem("numeroCotizacion", numeroCotizacion);
+  document.getElementById("titulo-factura").textContent = "Factura";
+  alert("Numeración reiniciada.");
+}
+  }
