@@ -167,7 +167,7 @@
 </head>
 <body>
 
-  <h1 id="titulo-cotizacion">FACTURA</h1>
+  <h1 id="titulo-cotizacion">COMPROBANTE DE COMPRA</h1>
 
   <div class="formulario">
     <label for="nombre">Nombre del Cliente:</label>
@@ -202,7 +202,7 @@
         </tr>
       </tbody>
     </table>
-    <button onclick="generarFactura()">GENERAR FACTURA</button>
+    <button onclick="generarFactura()">GENERAR COMPROBANTE</button>
   </div>
 
   <div style="text-align: center;">
@@ -253,8 +253,19 @@
         return;
       }
 
-      const numeroFormateado = String(numeroCotizacion).padStart(5, '0');
-      document.getElementById("titulo-cotizacion").textContent = `Factura No. ${numeroFormateado}`;
+      const hoy = new Date();
+ 
+const dia = String(hoy.getDate()).padStart(2, "0");
+const mes = String(hoy.getMonth() + 1).padStart(2, "0");
+const anio = hoy.getFullYear();
+ 
+const correlativo = String(numeroCotizacion).padStart(3, "0");
+ 
+const numeroFormateado =
+`CC-${dia}${mes}${anio}-${correlativo}`;
+      
+      document.getElementById("titulo-cotizacion").textContent =
+`COMPROBANTE DE COMPRA No. ${numeroFormateado}`;
 
       const facturaHTML = `
         <div class="encabezado">
@@ -266,8 +277,11 @@
           </div>
         </div>
 
-        <h2 style="text-align:center; margin-bottom:20px;">Factura No. ${numeroFormateado}</h2>
-        <p><strong>Fecha:</strong> ${fecha}</p>
+<h2 style="text-align:center; margin-bottom:20px;">
+COMPROBANTE DE COMPRA No. ${numeroFormateado}
+</h2>
+
+<p><strong>Fecha:</strong> ${fecha}</p>
 
         <div class="datos-cliente">
           <h2>Datos del Cliente</h2>
@@ -310,7 +324,7 @@
         useCORS: true
       }).then(canvas => {
         const link = document.createElement("a");
-        link.download = "factura-branox.png";
+        link.download = "comprobante-compra-branox.png";
         link.href = canvas.toDataURL("image/png");
         link.click();
       });
@@ -331,7 +345,9 @@
       if (confirm("¿Reiniciar numeración de cotización?")) {
         numeroCotizacion = 1;
         localStorage.setItem("numeroCotizacion", numeroCotizacion);
-        document.getElementById("titulo-cotizacion").textContent = "Cotización";
+document.getElementById("titulo-cotizacion").textContent =
+"COMPROBANTE DE COMPRA";
+        
         alert("Numeración reiniciada.");
       }
     }
